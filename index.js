@@ -6,7 +6,7 @@ const mysql = require("mysql");
 const db = mysql.createPool({
     host:"facultydb.cslwxjjcqksg.ap-southeast-2.rds.amazonaws.com",
     user:"admin",
-    password:"Sree23awsrds",
+    password:"",
     database:"facultydb"
 });
 
