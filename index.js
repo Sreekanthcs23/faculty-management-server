@@ -2,13 +2,14 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const mysql = require("mysql");
+require('dotenv').config();
 
 const db = mysql.createPool({
     host:"facultydb.cslwxjjcqksg.ap-southeast-2.rds.amazonaws.com",
     user:"admin",
-    password:"",
+    password:process.env.AWS_PASSWORD,
     database:"facultydb"
-});
+}); 
 
 const app = express();
 
@@ -29,14 +30,19 @@ app.post('/education',(req,res) => {
     const branch = req.body.branch;
     const specialization = req.body.specialization;
     const university = req.body.university;
-    const date = req.body.date;
+    const dateFull = req.body.date;
     const marks = req.body.marks;
+
     const marksFloat = parseFloat(marks);
+    const date = dateFull.toString().slice(0,10);
+
+    console.log(req.body);
+    console.log(date);
 
     const sqlInsert = "insert into faculty.education(userid,degree,branch,specialization,university,dateofacq,marks) values(?,?,?,?,?,?,?); ";
     db.query(sqlInsert,[1,degree,branch,specialization,university,date,marksFloat],(err,result) => {
         console.log(err);
-    })
+    }) 
 });
 
 
