@@ -67,29 +67,6 @@ app.get("/isUserAuth",verifyJWT,(req,res)=> {
  
 app.use("/education",educationRoute);
 
-app.get('/fundedproject/select',(req,res) => {
-    const sqlSelect = "select * from fundedProject;";
-    db.query(sqlSelect,(err,result) => {
-        console.log("fetched"+result);
-        res.json(result);
-    })
-});
-
-app.post('/fundedproject/insert',(req,res) => {
-    const name = req.body.name;
-    const agency = req.body.agency;
-    const amount = req.body.amount;
-    const period = req.body.period;
-    const dateFull = req.body.date;
-    const status = req.body.status;
-
-    const date = dateFull.toString().slice(0,10);
-    const sqlInsert = "insert into fundedProject(name,agency,amount,period,date_of_san,status,userid) values(?,?,?,?,?,?,?);";
-    db.query(sqlInsert,[name,agency,amount,period,date,status,1],(err,result) => {
-        console.log(err);
-    })
-});
-
 
 app.listen(3001,() => {
     console.log("server started on port 3001");
