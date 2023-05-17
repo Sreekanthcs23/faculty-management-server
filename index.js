@@ -1,8 +1,10 @@
+
 require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const educationRoute = require("./src/routes/education.routes");
+const professionalRoute = require("./src/routes/professional.routes");
 const loginRoute = require("./src/routes/login.routes");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -67,6 +69,7 @@ app.get("/isUserAuth",verifyJWT,(req,res)=> {
  
 app.use("/education",educationRoute);
 
+app.use("/professional",professionalRoute);
 
 app.listen(3001,() => {
     console.log("server started on port 3001");
