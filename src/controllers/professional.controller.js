@@ -2,7 +2,7 @@ const db = require("../models/db.js");
 
 //// retrieve data from education table
 exports.select = (req,res) => {
-    const sqlSelect = "select * from education;";
+    const sqlSelect = "select * from current_institution";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
         res.json(result);
@@ -11,21 +11,19 @@ exports.select = (req,res) => {
 
 //// insert data into education table
 exports.insert = (req,res) => {
-    const degree = req.body.degree;
-    const branch = req.body.branch;
-    const specialization = req.body.specialization;
-    const university = req.body.university;
-    const dateFull = req.body.date;
-    const marks = req.body.marks;
-
-    const marksFloat = parseFloat(marks);
+    const joiningdate = req.body.joining_date;
+    const joiningdesignation = req.body.joiningdesignation;
+    const dateofproblemdeclaration = req.body.dateofproblemdeclaration;
+    const promotiondate = req.body.promotiondate;
+    const promotiondesignation = req.body.promotiondesignation;
+    
     const date = dateFull.toString().slice(0,10);
 
     console.log(req.body);
     console.log(date);
 
-    const sqlInsert = "insert into education(degree,branch,specialization,university,date_of_acq,marks,userid) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[degree,branch,specialization,university,date,marksFloat,1],(err,result) => {
+    const sqlInsert = "insert into current_profession(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation) values(?,?,?,?,?,?,) ; ";
+    db.query(sqlInsert,[1,joiningdate,joiningdesignation,dateofproblemdeclaration,promotiondate,promotiondesignation,1],(err,result) => {
         console.log(err);
     }) 
 };
