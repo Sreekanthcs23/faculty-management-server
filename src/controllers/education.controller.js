@@ -45,6 +45,7 @@ exports.insert = (req,res) => {
     const university = req.body.university;
     const dateFull = req.body.date;
     const marks = req.body.marks;
+    const college = req.body.college;
 
     const marksFloat = parseFloat(marks);
     const date = dateFull.toString().slice(4,15);
@@ -54,8 +55,8 @@ exports.insert = (req,res) => {
 
     const certUrl = publicUrl.split(" ").join("%20");
 
-    const sqlInsert = "insert into education(degree,branch,specialization,university,date_of_acq,marks,userid,certificate_link) values(?,?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[degree,branch,specialization,university,date,marksFloat,1,certUrl],(err,result) => {
+    const sqlInsert = "insert into education(degree,branch,specialization,university,college,date_of_acq,marks,userid,certificate_link) values(?,?,?,?,?,?,?,?); ";
+    db.query(sqlInsert,[degree,branch,specialization,university,college,date,marksFloat,1,certUrl],(err,result) => {
         console.log(err);
     }) 
 };
