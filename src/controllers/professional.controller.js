@@ -17,10 +17,10 @@ exports.insert = (req,res) => {
     const promotiondate = req.body.promotiondate;
     const promotiondesignation = req.body.promotiondesignation;
     
-    const date = dateFull.toString().slice(0,10);
+    //const date = dateFull.toString().slice(0,10);
 
     console.log(req.body);
-    console.log(date);
+    //console.log(date);
 
     const sqlInsert = "insert into current_profession(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation) values(?,?,?,?,?,?,) ; ";
     db.query(sqlInsert,[1,joiningdate,joiningdesignation,dateofproblemdeclaration,promotiondate,promotiondesignation,1],(err,result) => {
