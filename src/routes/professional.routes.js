@@ -14,6 +14,6 @@ const router = express.Router();
 
 router.get("/select",controller.select);
 
-router.post("/insert", multer.single("pdffile"),controller.insert);
+router.post("/insert", multer.single("experiencecertificate"),controller.insert);
 
 module.exports = router;

@@ -10,7 +10,7 @@ const storage = new Storage({
 const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data from education table
-exports.select = (req,res) => {
+/*exports.select = (req,res) => {
     const sqlSelect = "select * from current_institution";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
@@ -69,9 +69,9 @@ exports.insert = (req,res) => {
         console.log(err);
     }) 
 };
+*/
 
-
-exports.select2 = (req,res) => {
+exports.select = (req,res) => {
   const sqlSelect = "select * from previous_experience";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
@@ -79,10 +79,10 @@ exports.select2 = (req,res) => {
   })
 };
 
-//// insert data into previous_experience table
-exports.insert2 = (req,res) => {
+// insert data into previous_experience table
+exports.insert = (req,res) => {
 
-var publicUrls = [];
+//var publicUrls = [];
 
 var publicUrl;  
     try {
