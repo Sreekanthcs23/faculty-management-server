@@ -14,7 +14,7 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/select1",(req,res) => {
-  const sqlSelect = "select * from current_institution";
+  const sqlSelect = "select * from current_institution where userid = 2";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
       res.json(result);
@@ -28,46 +28,6 @@ router.get("/select2",(req,res) => {
       res.json(result);
   })
 });
-
-router.post("/insert2", multer.single("experiencecertificate"),(req,res) => {
-
-  var publicUrl;  
-      try {
-          if (req.file) {
-            console.log("File found, trying to upload...");
-            const blob = bucket.file(req.file.originalname);
-            publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-            console.log(publicUrl);
-            const blobStream = blob.createWriteStream();
-      
-            blobStream.on("finish", () => {
-              console.log("Success");
-            });
-            blobStream.end(req.file.buffer);
-          } else throw "error with img";
-        } catch (error) {
-          res.status(500).send(error);
-      }
-  
-    const type = req.body.type;
-    const fromDate1 = req.body.fromDate;
-    const toDate1 = req.body.toDate;
-    const designation = req.body.designation;
-    const institute = req.body.institute;
-    
-    //const date = dateFull.toString().slice(0,10);
-    const fromDate = fromDate1.toString().slice(4,15);
-    const toDate = toDate1.toString().slice(4,15);
-    console.log(req.body);
-    //console.log(date);
-  
-    const experiencecertificateUrl = publicUrl.split(" ").join("%20");
-  
-    const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experiencecertificateUrl],(err,result) => {
-        console.log(err);
-    }) 
-  });
 
  // const upload = uploads({ dest: 'uploads/' }); 
   router.post("/insert1", multer.single("appointmentOrder")), (req,res) => {
@@ -165,4 +125,43 @@ router.post("/insert2", multer.single("experiencecertificate"),(req,res) => {
       }) 
   } 
 
+  router.post("/insert2", multer.single("experiencecertificate"),(req,res) => {
+
+    var publicUrl;  
+        try {
+            if (req.file) {
+              console.log("File found, trying to upload...");
+              const blob = bucket.file(req.file.originalname);
+              publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+              console.log(publicUrl);
+              const blobStream = blob.createWriteStream();
+        
+              blobStream.on("finish", () => {
+                console.log("Success");
+              });
+              blobStream.end(req.file.buffer);
+            } else throw "error with img";
+          } catch (error) {
+            res.status(500).send(error);
+        }
+    
+      const type = req.body.type;
+      const fromDate1 = req.body.fromDate;
+      const toDate1 = req.body.toDate;
+      const designation = req.body.designation;
+      const institute = req.body.institute;
+      
+      //const date = dateFull.toString().slice(0,10);
+      const fromDate = fromDate1.toString().slice(4,15);
+      const toDate = toDate1.toString().slice(4,15);
+      console.log(req.body);
+      //console.log(date);
+    
+      const experiencecertificateUrl = publicUrl.split(" ").join("%20");
+    
+      const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
+      db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experiencecertificateUrl],(err,result) => {
+          console.log(err);
+      }) 
+    });
 module.exports = router;

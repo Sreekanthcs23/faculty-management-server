@@ -53,7 +53,7 @@ exports.insert1 = (req,res) => {
     const appointmentOrderUrl = publicUrl.split(" ").join("%20");
 
     const sqlInsert = "insert into current_institution(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation,appointment_order_link) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[1,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
+    db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
         console.log(err);
     }) 
 };
@@ -79,7 +79,7 @@ exports.insert1Pdf2 = (req,res) => {
         res.status(500).send(error);
     }
     const problemDeclarationUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "insert into current_institution(problem_declaration_link) values(?); ";
+    const sqlInsert = "insert into current_institution(problem_declaration_link) values(?) where userid = 2; ";
     db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
         console.log(err);
     }) 
@@ -106,7 +106,7 @@ exports.insert1Pdf3 = (req,res) => {
         res.status(500).send(error);
     }
     const promotionOrderUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "insert into current_institution(promotion_order_link) values(?); ";
+    const sqlInsert = "insert into current_institution(promotion_order_link) values(?) where useid = 2; ";
     db.query(sqlInsert,[promotionOrderUrl],(err,result) => {
         console.log(err);
     }) 
