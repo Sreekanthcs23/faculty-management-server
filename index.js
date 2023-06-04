@@ -64,7 +64,7 @@ const verifyJWT = (req,res,next) => {
 } 
 
 app.get("/isUserAuth",verifyJWT,(req,res)=> {
-    res.send("Yo u are authenticated congrats");
+    res.send("You are authenticated congrats");
 });
  
 app.use("/education",educationRoute);
