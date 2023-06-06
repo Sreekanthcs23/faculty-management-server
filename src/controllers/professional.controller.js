@@ -11,7 +11,7 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data current institution table
 exports.select1 = (req,res) => {
-    const sqlSelect = "select * from current_institution";
+    const sqlSelect = "select * from current_institution where userid = 2";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
         res.json(result);
@@ -21,7 +21,7 @@ exports.select1 = (req,res) => {
 //// insert data into current institute with appointment order table
 exports.insert1 = (req,res) => {
 
-  var publicUrl;  
+  var publicUrl = '';  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -61,7 +61,7 @@ exports.insert1 = (req,res) => {
 //uploading problem declaration to current institute table
 exports.insert1Pdf2 = (req,res) => {
 
-  var publicUrl;  
+  var publicUrl = '';  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -89,7 +89,7 @@ exports.insert1Pdf2 = (req,res) => {
 //uploading promotion order to current institute table
 exports.insert1Pdf3 = (req,res) => {
 
-  var publicUrl;  
+  var publicUrl = '';  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -127,13 +127,13 @@ exports.select2 = (req,res) => {
 // insert data into previous_experience table
 exports.insert2 = (req,res) => {
 
-var publicUrl2;  
+var publicUrl = '';  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
           const blob = bucket.file(req.file.originalname);
-          publicUrl2 = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-          console.log(publicUrl2);
+          publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+          console.log(publicUrl);
           const blobStream = blob.createWriteStream();
     
           blobStream.on("finish", () => {
@@ -157,7 +157,7 @@ var publicUrl2;
   console.log(req.body);
   console.log("Inside insert 2 controller");
 
-  const experienceCertificateUrl = publicUrl2.split(" ").join("%20");
+  const experienceCertificateUrl = publicUrl.split(" ").join("%20");
   console.log(experienceCertificateUrl);
 
   /*const sqlInsert = "insert into previous_experience(userid, prof_type, from_date, to_date ,designation ,institute, experience_certificate_link) values(?,?,?,?,?,?,?); ";

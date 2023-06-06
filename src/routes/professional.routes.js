@@ -16,7 +16,7 @@ const router = express.Router();
 router.get("/select1",(req,res) => {
   const sqlSelect = "select * from current_institution where userid = 2";
   db.query(sqlSelect,(err,result) => {
-      console.log("fetched"+result);
+      console.log("fetched "+result);
       res.json(result);
   })
 });
@@ -33,7 +33,7 @@ router.get("/select2",(req,res) => {
  // const upload = uploads({ dest: 'uploads/' }); 
   router.post("/insert1", multer.single("appointmentOrder"), (req,res) => {
 
-    var publicUrl;  
+    var publicUrl = '';  
       try {
           if (req.file) {
             console.log("File found, trying to upload...");
@@ -69,14 +69,14 @@ router.get("/select2",(req,res) => {
       //const promotionorderUrl = publicUrls[2].split(" ").join("%20");
   
       const sqlInsert = "insert into current_institution(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation,appointment_order_link) values(?,?,?,?,?,?,?); ";
-      db.query(sqlInsert,[1,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmnetOrderUrl],(err,result) => {
+      db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmnetOrderUrl],(err,result) => {
           console.log(err);
       }) 
   });
 
    router.post("/insert1Pdf2", multer.single("problemDeclaration"), (req,res) => {
 
-    var publicUrl;  
+    var publicUrl = '';  
       try {
           if (req.file) {
             console.log("File found, trying to upload...");
@@ -102,7 +102,7 @@ router.get("/select2",(req,res) => {
 
   router.post("/insert1Pdf3", multer.single("promotionOrder"), (req,res) => {
 
-    var publicUrl;  
+    var publicUrl = '';  
       try {
           if (req.file) {
             console.log("File found, trying to upload...");
@@ -159,7 +159,7 @@ router.get("/select2",(req,res) => {
       console.log(publicUrl);
 
       const experienceCertificateUrl = publicUrl.split(" ").join("%20");
-    
+      console.log("Inside insert 2 router");
       console.log(experienceCertificateUrl);  
 
       const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
