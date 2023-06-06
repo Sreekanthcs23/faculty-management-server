@@ -50,3 +50,20 @@ exports.postLogin = (req, res) => {
       }
     );
   };
+
+  exports.verifyJWT = (req,res,next) => {
+    const token = req.headers["x-access-token"];
+    console.log("token:"+token);
+    if(!token) {
+        res.send("Yo we need a token, please give it to us next time!");
+    }else {
+        jwt.verify(token,"jwtsecret",(err,user) => {
+            if(err) {
+                res.json({auth:false,message:"U failed to authenticate"});
+            }else {
+                req.user = user;
+                next();
+            }
+        });
+    }
+}

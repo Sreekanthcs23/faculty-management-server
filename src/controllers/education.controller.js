@@ -1,4 +1,5 @@
 const db = require("../models/db.js");
+
 const { Storage } = require("@google-cloud/storage");
 
 let projectId = "famous-sunbeam-382606"; // Get this from Google Cloud
@@ -11,7 +12,8 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data from education table
 exports.select = (req,res) => {
-    const sqlSelect = "select * from education;";
+    console.log("user id in select:"+req.user.userid);
+    const sqlSelect = "select * from education where userid="+req.user.userid+";";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
         res.json(result);
@@ -55,8 +57,8 @@ exports.insert = (req,res) => {
 
     const certUrl = publicUrl.split(" ").join("%20");
 
-    const sqlInsert = "insert into education(degree,branch,specialization,university,college,date_of_acq,marks,userid,certificate_link) values(?,?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[degree,branch,specialization,university,college,date,marksFloat,1,certUrl],(err,result) => {
+    const sqlInsert = "insert into education(degree,branch,specialization,university,college,date_of_acq,marks,userid,certificate_link) values(?,?,?,?,?,?,?,?,?); ";
+    db.query(sqlInsert,[degree,branch,specialization,university,college,date,marksFloat,req.user.userid,certUrl],(err,result) => {
         console.log(err);
     }) 
 };

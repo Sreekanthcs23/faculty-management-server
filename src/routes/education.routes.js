@@ -8,12 +8,13 @@ const multer = Multer({
 });
 
 const controller = require('../controllers/education.controller');
+const verifyJWT = require("../controllers/login.controller").verifyJWT;
 const express = require("express");
 
 const router = express.Router();
 
-router.get("/select",controller.select);
+router.get("/select",verifyJWT,controller.select);
 
-router.post("/insert", multer.single("pdffile"),controller.insert);
+router.post("/insert",verifyJWT, multer.single("pdffile"),controller.insert);
 
 module.exports = router;
