@@ -8,6 +8,16 @@ const multer = Multer({
   },
 });
 
+const { Storage } = require("@google-cloud/storage");
+
+let projectId = "famous-sunbeam-382606"; // Get this from Google Cloud
+let keyFilename = "keyfile.json"; // Get this from Google Cloud -> Credentials -> Service Accounts
+const storage = new Storage({
+  projectId,
+  keyFilename,
+});
+const bucket = storage.bucket("faculty_doc_bucket");
+
 const controller = require('../controllers/professional.controller');
 const express = require("express");
 
@@ -15,6 +25,7 @@ const router = express.Router();
 
 router.get("/select1",(req,res) => {
   const sqlSelect = "select * from current_institution where userid = 2";
+  console.log("inside select1 router");
   db.query(sqlSelect,(err,result) => {
       console.log("fetched "+result);
       res.json(result);
@@ -57,19 +68,15 @@ router.get("/select2",(req,res) => {
       const promotionDate1 = req.body.promotionDate;
       const promotionDesignation = req.body.promotionDesignation;
       
-      //const date = dateFull.toString().slice(0,10);
       const joiningDate = joiningDate1.toString().slice(4,15);
       const dateofProblemDeclaration = dateofProblemDeclaration1.toString().slice(4,15);
       const promotionDate = promotionDate1.toString().slice(4,15);
       console.log(req.body);
-      //console.log(date);
-  
-      const appointmnetOrderUrl = publicUrl.split(" ").join("%20");
-      //
-      //const promotionorderUrl = publicUrls[2].split(" ").join("%20");
+
+      const appointmentOrderUrl = publicUrl.split(" ").join("%20");
   
       const sqlInsert = "insert into current_institution(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation,appointment_order_link) values(?,?,?,?,?,?,?); ";
-      db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmnetOrderUrl],(err,result) => {
+      db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
           console.log(err);
       }) 
   });

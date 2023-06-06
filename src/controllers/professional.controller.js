@@ -11,6 +11,7 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data current institution table
 exports.select1 = (req,res) => {
+  console.log("inside select1 controller");
     const sqlSelect = "select * from current_institution where userid = 2";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
