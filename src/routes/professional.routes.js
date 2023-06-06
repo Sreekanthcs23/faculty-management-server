@@ -126,9 +126,9 @@ router.get("/select2",(req,res) => {
       }) 
   } );
 
-  router.post("/insert2", multer.single("experiencecertificate"),(req,res) => {
+  router.post("/insert2", multer.single("experienceCertificate"),(req,res) => {
 
-    var publicUrl;  
+    var publicUrl = '';  
         try {
             if (req.file) {
               console.log("File found, trying to upload...");
@@ -152,16 +152,18 @@ router.get("/select2",(req,res) => {
       const designation = req.body.designation;
       const institute = req.body.institute;
       
-      //const date = dateFull.toString().slice(0,10);
       const fromDate = fromDate1.toString().slice(4,15);
       const toDate = toDate1.toString().slice(4,15);
       console.log(req.body);
-      //console.log(date);
+
+      console.log(publicUrl);
+
+      const experienceCertificateUrl = publicUrl.split(" ").join("%20");
     
-      const experiencecertificateUrl = publicUrl.split(" ").join("%20");
-    
+      console.log(experienceCertificateUrl);  
+
       const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
-      db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experiencecertificateUrl],(err,result) => {
+      db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experienceCertificateUrl],(err,result) => {
           console.log(err);
       }) 
     });

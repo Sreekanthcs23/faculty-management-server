@@ -127,13 +127,13 @@ exports.select2 = (req,res) => {
 // insert data into previous_experience table
 exports.insert2 = (req,res) => {
 
-var publicUrl;  
+var publicUrl2;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
           const blob = bucket.file(req.file.originalname);
-          publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-          console.log(publicUrl);
+          publicUrl2 = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
+          console.log(publicUrl2);
           const blobStream = blob.createWriteStream();
     
           blobStream.on("finish", () => {
@@ -157,7 +157,8 @@ var publicUrl;
   console.log(req.body);
   console.log("Inside insert 2 controller");
 
-  const experienceCertificateUrl = publicUrl.split(" ").join("%20");
+  const experienceCertificateUrl = publicUrl2.split(" ").join("%20");
+  console.log(experienceCertificateUrl);
 
   /*const sqlInsert = "insert into previous_experience(userid, prof_type, from_date, to_date ,designation ,institute, experience_certificate_link) values(?,?,?,?,?,?,?); ";
   db.query(sqlInsert,[1, type, fromDate, toDate, designation, institute, experienceCertificateUrl],(err,result) => {
