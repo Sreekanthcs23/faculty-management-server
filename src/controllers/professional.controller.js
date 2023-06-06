@@ -9,7 +9,7 @@ const storage = new Storage({
 });
 const bucket = storage.bucket("faculty_doc_bucket");
 
-//// retrieve data from education table
+//// retrieve data current institution table
 exports.select1 = (req,res) => {
     const sqlSelect = "select * from current_institution";
     db.query(sqlSelect,(err,result) => {
@@ -38,7 +38,7 @@ exports.insert1 = (req,res) => {
       } catch (error) {
         res.status(500).send(error);
     }
-  
+    console.log("Inserting first pdf and details");
     const joiningDate1 = req.body.joiningDate;
     const joiningDesignation = req.body.joiningDesignation;
     const dateofProblemDeclaration1 = req.body.dateofProblemDeclaration;
@@ -78,8 +78,9 @@ exports.insert1Pdf2 = (req,res) => {
       } catch (error) {
         res.status(500).send(error);
     }
+    console.log("Inserting second pdf ");
     const problemDeclarationUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "insert into current_institution(problem_declaration_link) values(?) where userid = 2; ";
+    const sqlInsert = "update current_institution set problem_declaration_link = ? where userid = 2; ";
     db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
         console.log(err);
     }) 
@@ -105,8 +106,9 @@ exports.insert1Pdf3 = (req,res) => {
       } catch (error) {
         res.status(500).send(error);
     }
+    console.log("Inserting third pdf ");
     const promotionOrderUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "insert into current_institution(promotion_order_link) values(?) where useid = 2; ";
+    const sqlInsert = "update current_institution set promotion_order_link = ? where useid = 2; ";
     db.query(sqlInsert,[promotionOrderUrl],(err,result) => {
         console.log(err);
     }) 
@@ -142,7 +144,7 @@ var publicUrl;
       } catch (error) {
         res.status(500).send(error);
     }
-
+    console.log("Inserting previous experience details");
   const type = req.body.type;
   const fromDate1 = req.body.fromDate;
   const toDate1 = req.body.toDate;
@@ -153,12 +155,17 @@ var publicUrl;
   const fromDate = fromDate1.toString().slice(4,15);
   const toDate = toDate1.toString().slice(4,15);
   console.log(req.body);
-  //console.log(date);
+  console.log("Inside insert 2 controller");
 
   const experienceCertificateUrl = publicUrl.split(" ").join("%20");
 
-  const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
-  db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experienceCertificateUrl],(err,result) => {
+  /*const sqlInsert = "insert into previous_experience(userid, prof_type, from_date, to_date ,designation ,institute, experience_certificate_link) values(?,?,?,?,?,?,?); ";
+  db.query(sqlInsert,[1, type, fromDate, toDate, designation, institute, experienceCertificateUrl],(err,result) => {
       console.log(err);
-  }) 
+  })*/
+  const sqlInsert = "INSERT INTO previous_experience (userid, prof_type, from_date, to_date, designation, institute, experience_certificate_link) VALUES (?,?,?,?,?,?,?);";
+db.query(sqlInsert, [2, type, fromDate, toDate, designation, institute, experienceCertificateUrl], (err, result) => {
+  console.log(err);
+});
+ 
 };

@@ -25,12 +25,13 @@ router.get("/select2",(req,res) => {
   const sqlSelect = "select * from previous_experience";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
+      console.log(result[0].from_date);
       res.json(result);
   })
 });
 
  // const upload = uploads({ dest: 'uploads/' }); 
-  router.post("/insert1", multer.single("appointmentOrder")), (req,res) => {
+  router.post("/insert1", multer.single("appointmentOrder"), (req,res) => {
 
     var publicUrl;  
       try {
@@ -71,9 +72,9 @@ router.get("/select2",(req,res) => {
       db.query(sqlInsert,[1,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmnetOrderUrl],(err,result) => {
           console.log(err);
       }) 
-  };
+  });
 
-   router.post("/insert1Pdf2", multer.single("problemDeclaration")), (req,res) => {
+   router.post("/insert1Pdf2", multer.single("problemDeclaration"), (req,res) => {
 
     var publicUrl;  
       try {
@@ -97,9 +98,9 @@ router.get("/select2",(req,res) => {
       db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
           console.log(err);
       }) 
-  } 
+  });
 
-  router.post("/insert1Pdf3", multer.single("promotionOrder")), (req,res) => {
+  router.post("/insert1Pdf3", multer.single("promotionOrder"), (req,res) => {
 
     var publicUrl;  
       try {
@@ -123,7 +124,7 @@ router.get("/select2",(req,res) => {
       db.query(sqlInsert,[promotionOrderUrl],(err,result) => {
           console.log(err);
       }) 
-  } 
+  } );
 
   router.post("/insert2", multer.single("experiencecertificate"),(req,res) => {
 
