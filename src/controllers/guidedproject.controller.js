@@ -12,7 +12,7 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data from guidedproject table
 exports.select = (req,res) => {
-    const sqlSelect = "select * from guidedproject;";
+    const sqlSelect = "select * from guidedproject where userid="+req.user.userid+";";
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
         res.json(result);
@@ -21,32 +21,16 @@ exports.select = (req,res) => {
 
 //// insert data into guidedproject table
 exports.insert = (req,res) => {
-    var publicUrl;  
-    try {
-        if (req.file) {
-          console.log("File found, trying to upload...");
-          const blob = bucket.file(req.file.originalname);
-          publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
-          console.log(publicUrl);
-          const blobStream = blob.createWriteStream();
     
-          blobStream.on("finish", () => {
-            console.log("Success");
-          });
-          blobStream.end(req.file.buffer);
-        } else throw "error with img";
-      } catch (error) {
-        res.status(500).send(error);
-    }
     const sname = req.body.sname;
     const pname = req.body.pname;
     const batch = req.body.batch;
     const publication = req.body.publication;
-    
+    console.log(sname);
     console.log(req.body);
-
+    console.log("inside");
     const sqlInsert = "insert into guidedproject(sname,pname,batch,publication,userid) values(?,?,?,?,?); ";
-    db.query(sqlInsert,[sname,pname,batch,publication,1],(err,result) => {
+    db.query(sqlInsert,[sname,pname,batch,publication,req.user.userid],(err,result) => {
         console.log(err);
     }) 
 };

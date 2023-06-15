@@ -4,7 +4,10 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const educationRoute = require("./src/routes/education.routes");
+const consultancyRoute = require("./src/routes/consultancy.routes");
+const guidedprojectRoute = require("./src/routes/guidedproject.routes");
 const professionalRoute = require("./src/routes/professional.routes");
+const fundedprojectRoute = require("./src/routes/fundedproject.routes");
 const loginRoute = require("./src/routes/login.routes");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
@@ -68,8 +71,10 @@ app.get("/isUserAuth",verifyJWT,(req,res)=> {
 });
  
 app.use("/education",educationRoute);
-
+app.use("/consultancy",consultancyRoute);
+app.use("/guidedproject",guidedprojectRoute);
 app.use("/professional",professionalRoute);
+app.use("/fundedproject",fundedprojectRoute);
 
 app.listen(3001,() => {
     console.log("server started on port 3001");

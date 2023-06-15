@@ -11,11 +11,12 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data from consultancy table
 exports.select = (req,res) => {
-    const sqlSelect = "select * from consultancy;";
-    db.query(sqlSelect,(err,result) => {
-        console.log("fetched"+result);
-        res.json(result);
-    })
+  console.log("user id in select:"+req.user.userid);
+  const sqlSelect = "select * from consultancy where userid="+req.user.userid+";";
+  db.query(sqlSelect,(err,result) => {
+      console.log("fetched"+result);
+      res.json(result);
+  })
 };
 
 //// insert data into consultancy table
@@ -42,9 +43,9 @@ exports.insert = (req,res) => {
     const year = req.body.year;
     
     console.log(req.body);
-
-    const sqlInsert = "insert into consultancy(agency,amount,year,userid) values(?,?,?,?); ";
-    db.query(sqlInsert,[agency,amount,year,1],(err,result) => {
+    const certUrl = publicUrl.split(" ").join("%20");
+    const sqlInsert = "insert into consultancy(agency,amount,year,userid,certificate) values(?,?,?,?,?); ";
+    db.query(sqlInsert,[agency,amount,year,req.user.userid,certUrl],(err,result) => {
         console.log(err);
     }) 
 };

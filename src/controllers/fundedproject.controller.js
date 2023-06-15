@@ -12,11 +12,12 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 //// retrieve data from fundedproject table
 exports.select = (req,res) => {
-    const sqlSelect = "select * from fundedproject;";
-    db.query(sqlSelect,(err,result) => {
-        console.log("fetched"+result);
-        res.json(result);
-    })
+  console.log("user id in select:"+req.user.userid);
+  const sqlSelect = "select * from fundedproject where userid="+req.user.userid+";";
+  db.query(sqlSelect,(err,result) => {
+      console.log("fetched"+result);
+      res.json(result);
+  })
 };
 
 //// insert data into fundedproject table
@@ -44,13 +45,13 @@ exports.insert = (req,res) => {
     const dateFull = req.body.date;
     const status = req.body.status;
 
-    const date = dateFull.toString().slice(0,10);
+    const date = dateFull.toString().slice(4,15);
 
     console.log(req.body);
     console.log(dateFull);
-
-    const sqlInsert = "insert into fundedproject(name,agency,amount,period,date,status,userid) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[name,agency,amount,period,date,status,1],(err,result) => {
+    const certUrl = publicUrl.split(" ").join("%20");
+    const sqlInsert = "insert into fundedproject(name,agency,amount,period,date,status,userid,letter) values(?,?,?,?,?,?,?,?); ";
+    db.query(sqlInsert,[name,agency,amount,period,date,status,req.user.userid,certUrl],(err,result) => {
         console.log(err);
     }) 
 };
