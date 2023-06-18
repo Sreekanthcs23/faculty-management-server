@@ -10,6 +10,8 @@ const multer = Multer({
 
 const { Storage } = require("@google-cloud/storage");
 
+const verifyJWT = require("../controllers/login.controller").verifyJWT;
+
 let projectId = "famous-sunbeam-382606"; // Get this from Google Cloud
 let keyFilename = "keyfile.json"; // Get this from Google Cloud -> Credentials -> Service Accounts
 const storage = new Storage({
@@ -23,8 +25,8 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/select1",(req,res) => {
-  const sqlSelect = "select * from current_institution where userid = 2";
+router.get("/select1", verifyJWT, (req,res) => {
+  const sqlSelect = "select * from current_institution where userid = " + req.user.userid + " ;" ;
   console.log("inside select1 router");
   db.query(sqlSelect,(err,result) => {
       console.log("fetched "+result);
@@ -32,8 +34,8 @@ router.get("/select1",(req,res) => {
   })
 });
 
-router.get("/select2",(req,res) => {
-  const sqlSelect = "select * from previous_experience";
+router.get("/select2", verifyJWT, (req,res) => {
+  const sqlSelect = "select * from previous_experience where userid = " + req.user.userid + ";";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
       console.log(result[0].from_date);
@@ -42,7 +44,7 @@ router.get("/select2",(req,res) => {
 });
 
  // const upload = uploads({ dest: 'uploads/' }); 
-  router.post("/insert1", multer.single("appointmentOrder"), (req,res) => {
+  router.post("/insert1", verifyJWT, multer.single("appointmentOrder"), (req,res) => {
 
     var publicUrl = '';  
       try {
@@ -76,12 +78,12 @@ router.get("/select2",(req,res) => {
       const appointmentOrderUrl = publicUrl.split(" ").join("%20");
   
       const sqlInsert = "insert into current_institution(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation,appointment_order_link) values(?,?,?,?,?,?,?); ";
-      db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
+      db.query(sqlInsert,[req.user.userid, joiningDate, joiningDesignation, dateofProblemDeclaration, promotionDate, promotionDesignation, appointmentOrderUrl],(err,result) => {
           console.log(err);
       }) 
   });
 
-   router.post("/insert1Pdf2", multer.single("problemDeclaration"), (req,res) => {
+   router.post("/insert1Pdf2", verifyJWT, multer.single("problemDeclaration"), (req,res) => {
 
     var publicUrl = '';  
       try {
@@ -101,13 +103,13 @@ router.get("/select2",(req,res) => {
           res.status(500).send(error);
       }
       const problemDeclarationUrl = publicUrl.split(" ").join("%20");
-      const sqlInsert = "insert into current_institution(problem_declaration_link) values(?); ";
+      const sqlInsert = "insert into current_institution(problem_declaration_link) values(?) where userid = "+ req.user.userid +";" ; 
       db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
           console.log(err);
       }) 
   });
 
-  router.post("/insert1Pdf3", multer.single("promotionOrder"), (req,res) => {
+  router.post("/insert1Pdf3", verifyJWT, multer.single("promotionOrder"), (req,res) => {
 
     var publicUrl = '';  
       try {
@@ -127,13 +129,13 @@ router.get("/select2",(req,res) => {
           res.status(500).send(error);
       }
       const promotionOrderUrl = publicUrl.split(" ").join("%20");
-      const sqlInsert = "insert into current_institution(promotion_order_link) values(?); ";
+      const sqlInsert = "insert into current_institution(promotion_order_link) values(?) where userid = " + req.user.userid + ";";
       db.query(sqlInsert,[promotionOrderUrl],(err,result) => {
           console.log(err);
       }) 
   } );
 
-  router.post("/insert2", multer.single("experienceCertificate"),(req,res) => {
+  router.post("/insert2", verifyJWT, multer.single("experienceCertificate"),(req,res) => {
 
     var publicUrl = '';  
         try {
@@ -169,8 +171,8 @@ router.get("/select2",(req,res) => {
       console.log("Inside insert 2 router");
       console.log(experienceCertificateUrl);  
 
-      const sqlInsert = "insert into previous_experience(userid,prof_type,from_date,to_date,designation,institute,experience_certificate_link) values(?,?,?,?,?,?,?); ";
-      db.query(sqlInsert,[1,type,fromDate,toDate,designation,institute,experienceCertificateUrl],(err,result) => {
+      const sqlInsert = "insert into previous_experience(userid, prof_type, from_date, to_date, designation, institute, experience_certificate_link) values(?,?,?,?,?,?,?); ";
+      db.query(sqlInsert,[req.user.userid, type, fromDate, toDate, designation, institute, experienceCertificateUrl],(err,result) => {
           console.log(err);
       }) 
     });
