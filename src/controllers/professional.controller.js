@@ -9,7 +9,7 @@ const storage = new Storage({
 });
 const bucket = storage.bucket("faculty_doc_bucket");
 
-//// retrieve data current institution table
+// retrieve data current institution table
 exports.select1 = (req,res) => {
   console.log("inside select1 controller");
     const sqlSelect = "select * from current_institution  where userid = " + req.user.userid + " ;" ;
