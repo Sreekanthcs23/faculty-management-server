@@ -55,3 +55,14 @@ exports.insert = (req,res) => {
         console.log(err);
     }) 
 };
+
+exports.delete = (req,res) => {
+  const fundid = req.body.fundid;
+  console.log(fundid)
+  const sqlDelete = "delete from fundedproject where fund_id = "+fundid+";";
+  db.query(sqlDelete,(err,result) => {
+    if (err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+  res.send("Deleted");
+}

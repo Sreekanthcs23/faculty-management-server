@@ -47,5 +47,16 @@ exports.insert = (req,res) => {
     const sqlInsert = "insert into consultancy(agency,amount,year,userid,certificate) values(?,?,?,?,?); ";
     db.query(sqlInsert,[agency,amount,year,req.user.userid,certUrl],(err,result) => {
         console.log(err);
-    }) 
-};
+    })
+  };
+
+    exports.delete = (req,res) => {
+      const consid = req.body.consid;
+      console.log(consid)
+      const sqlDelete = "delete from consultancy where cons_id = "+consid+";";
+      db.query(sqlDelete,(err,result) => {
+        if (err) throw err;
+        console.log("Number of records deleted: " + result.affectedRows);
+      });
+      res.send("Deleted");
+}

@@ -17,5 +17,5 @@ router.get("/select",verifyJWT,controller.select);
 
 
 router.post("/insert",verifyJWT,controller.insert);
-
+router.post("/delete",verifyJWT,controller.delete);
 module.exports = router;
