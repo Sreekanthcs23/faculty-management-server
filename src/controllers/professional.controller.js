@@ -9,10 +9,10 @@ const storage = new Storage({
 });
 const bucket = storage.bucket("faculty_doc_bucket");
 
-//// retrieve data current institution table
+// retrieve data current institution table
 exports.select1 = (req,res) => {
   console.log("inside select1 controller");
-    const sqlSelect = "select * from current_institution where userid = 2";
+    const sqlSelect = "select * from current_institution  where userid = " + req.user.userid + " ;" ;
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
         res.json(result);
@@ -53,8 +53,8 @@ exports.insert1 = (req,res) => {
 
     const appointmentOrderUrl = publicUrl.split(" ").join("%20");
 
-    const sqlInsert = "insert into current_institution(userid,joining_date,joining_designation,date_of_problem_declaration,promotion_date,promotion_designation,appointment_order_link) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[2,joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
+    const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?  where userid = " +  req.user.userid  + " ;";
+    db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
         console.log(err);
     }) 
 };
@@ -81,7 +81,7 @@ exports.insert1Pdf2 = (req,res) => {
     }
     console.log("Inserting second pdf ");
     const problemDeclarationUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update current_institution set problem_declaration_link = ? where userid = 2; ";
+    const sqlInsert = "update current_institution set problem_declaration_link = ? where userid = " + req.user.userid + " ;";
     db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
         console.log(err);
     }) 
@@ -109,7 +109,7 @@ exports.insert1Pdf3 = (req,res) => {
     }
     console.log("Inserting third pdf ");
     const promotionOrderUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update current_institution set promotion_order_link = ? where useid = 2; ";
+    const sqlInsert = "update current_institution set promotion_order_link = ? where userid = " + req.user.userid + " ;";
     db.query(sqlInsert,[promotionOrderUrl],(err,result) => {
         console.log(err);
     }) 
@@ -118,7 +118,7 @@ exports.insert1Pdf3 = (req,res) => {
 //Previous experience
 
 exports.select2 = (req,res) => {
-  const sqlSelect = "select * from previous_experience";
+  const sqlSelect = "select * from previous_experience where userid = " + req.user.userid + " ;";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
       res.json(result);
@@ -166,7 +166,7 @@ var publicUrl = '';
       console.log(err);
   })*/
   const sqlInsert = "INSERT INTO previous_experience (userid, prof_type, from_date, to_date, designation, institute, experience_certificate_link) VALUES (?,?,?,?,?,?,?);";
-db.query(sqlInsert, [2, type, fromDate, toDate, designation, institute, experienceCertificateUrl], (err, result) => {
+db.query(sqlInsert, [ req.user.userid , type, fromDate, toDate, designation, institute, experienceCertificateUrl], (err, result) => {
   console.log(err);
 });
  
