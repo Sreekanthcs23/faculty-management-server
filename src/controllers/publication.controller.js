@@ -64,8 +64,8 @@ exports.insert = (req,res) => {
 };
 
 exports.delete = (req,res) => {
-  const pubid = req.body.pubid;
-  const sqlDelete = "delete from education where idpublication = "+pubid+";";
+  const pubid = req.body.pub_id;
+  const sqlDelete = "delete from publication where idpublication = "+pubid+";";
   db.query(sqlDelete,(err,result) => {
     if (err) throw err;
     console.log("Number of records deleted: " + result.affectedRows);
