@@ -17,4 +17,6 @@ router.get("/select",verifyJWT,controller.select);
 
 router.post("/insert",verifyJWT, multer.single("pdffile"),controller.insert);
 
+router.post("/delete",verifyJWT,controller.delete);
+
 module.exports = router;

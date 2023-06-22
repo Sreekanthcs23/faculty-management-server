@@ -62,3 +62,13 @@ exports.insert = (req,res) => {
         console.log(err);
     }) 
 };
+
+exports.delete = (req,res) => {
+  const eduid = req.body.eduid;
+  const sqlDelete = "delete from education where edu_id = "+eduid+";";
+  db.query(sqlDelete,(err,result) => {
+    if (err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+  res.send("Deleted");
+}
