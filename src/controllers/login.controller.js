@@ -34,7 +34,7 @@ exports.postLogin = (req, res) => {
                 const user = {userid:id};
                 console.log("id in login:"+user.userid);
                 const token = jwt.sign(user,"jwtsecret", {
-                    expiresIn: 300,
+                    expiresIn: 30000,
                 });
                 console.log("logged in");
                 req.session.user = result;
