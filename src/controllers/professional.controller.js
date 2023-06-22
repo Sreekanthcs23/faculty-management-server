@@ -19,7 +19,7 @@ exports.select1 = (req,res) => {
     })
 };
 
-//// insert data into current institute with appointment order table
+// insert data into current institute with appointment order table
 exports.insert1 = (req,res) => {
 
   var publicUrl = '';  
@@ -42,19 +42,19 @@ exports.insert1 = (req,res) => {
     console.log("Inserting first pdf and details");
     const joiningDate1 = req.body.joiningDate;
     const joiningDesignation = req.body.joiningDesignation;
-    const dateofProblemDeclaration1 = req.body.dateofProblemDeclaration;
+    const dateofProbationDeclaration1 = req.body.dateofProbationDeclaration;
     const promotionDate1 = req.body.promotionDate;
     const promotionDesignation = req.body.promotionDesignation;
 
     const joiningDate = joiningDate1.toString().slice(4,15);
-    const dateofProblemDeclaration = dateofProblemDeclaration1.toString().slice(4,15);
+    const dateofProbationDeclaration = dateofProbationDeclaration1.toString().slice(4,15);
     const promotionDate = promotionDate1.toString().slice(4,15);
     console.log(req.body);
 
     const appointmentOrderUrl = publicUrl.split(" ").join("%20");
 
     const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?  where userid = " +  req.user.userid  + " ;";
-    db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProblemDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
+    db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProbationDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
         console.log(err);
     }) 
 };
@@ -80,9 +80,9 @@ exports.insert1Pdf2 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting second pdf ");
-    const problemDeclarationUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update current_institution set problem_declaration_link = ? where userid = " + req.user.userid + " ;";
-    db.query(sqlInsert,[problemDeclarationUrl],(err,result) => {
+    const probationDeclarationUrl = publicUrl.split(" ").join("%20");
+    const sqlInsert = "update current_institution set probation_declaration_link = ? where userid = " + req.user.userid + " ;";
+    db.query(sqlInsert,[probationDeclarationUrl],(err,result) => {
         console.log(err);
     }) 
 } 
