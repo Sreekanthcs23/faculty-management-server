@@ -18,6 +18,18 @@ exports.select = (req,res) => {
       res.json(result);
   })
 };
+var tutorialUrl;
+var internalUrl;
+var resultUrl;
+var achievementUrl;
+var feedbackUrl;
+var attendanceUrl;
+var timetableUrl;
+var year;
+var batch;
+var branch;
+var subcode;
+var subname;
 //// insert data into teaching table
 exports.insert = (req,res) => {
     var publicUrl;  
@@ -37,23 +49,20 @@ exports.insert = (req,res) => {
       } catch (error) {
         res.status(500).send(error);
     }
-    const year = req.body.year;
-    const batch = req.body.batch;
-    const branch = req.body.branch;
-    const subcode = req.body.subcode;
-    const subname = req.body.subname;
+    year = req.body.year;
+    batch = req.body.batch;
+    branch = req.body.branch;
+    subcode = req.body.subcode;
+    subname = req.body.subname;
 
     console.log(req.body);
-    const tutorialUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "insert into teaching(year,batch,branch,subcode,subname,userid,tutorial) values(?,?,?,?,?,?,?); ";
-    db.query(sqlInsert,[year,batch,branch,subcode,subname,req.user.userid,tutorialUrl],(err,result) => {
-        console.log(err);
-    }) 
+    tutorialUrl = publicUrl.split(" ").join("%20");
+    res.json({ message: "Data1 inserted successfully." });
 };
 
 exports.insert2 = (req,res) => {
 
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -71,16 +80,13 @@ exports.insert2 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting internal pdf ");
-    const internalUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set internal = ? where userid = "+req.user.userid+";";
-    db.query(sqlInsert,[internalUrl],(err,result) => {
-        console.log(err);
-    }) 
+    internalUrl = publicUrl.split(" ").join("%20");
+    res.json({ message: "Data2 inserted successfully." });
 } 
 
-exports.insert3 = (req,res) => {
+exports.insert3 = async (req,res) => {
 
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -98,16 +104,13 @@ exports.insert3 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting attendance pdf ");
-    const attendanceUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set attendance = ? where userid ="+ req.user.userid+";";
-    db.query(sqlInsert,[attendanceUrl],(err,result) => {
-        console.log(err);
-    }) 
+   attendanceUrl = publicUrl.split(" ").join("%20");
+   res.json({ message: "Data3 inserted successfully." });
 }
 
 exports.insert4 = (req,res) => {
 
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -125,16 +128,13 @@ exports.insert4 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting feedback pdf ");
-    const feedbackUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set feedback = ? where userid = "+ req.user.userid+";";
-    db.query(sqlInsert,[feedbackUrl],(err,result) => {
-        console.log(err);
-    }) 
+    feedbackUrl = publicUrl.split(" ").join("%20");
+    res.json({ message: "Data4 inserted successfully." });
 } 
 
 exports.insert5 = (req,res) => {
 
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -152,16 +152,13 @@ exports.insert5 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting timetable pdf ");
-    const timetableUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set timetable = ? where userid ="+ req.user.userid+";";
-    db.query(sqlInsert,[timetableUrl],(err,result) => {
-        console.log(err);
-    }) 
+    timetableUrl = publicUrl.split(" ").join("%20");
+    res.json({ message: "Data5 inserted successfully." });
 } 
 
 exports.insert6 = (req,res) => {
 
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -179,15 +176,11 @@ exports.insert6 = (req,res) => {
         res.status(500).send(error);
     }
     console.log("Inserting result pdf ");
-    const resultUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set result = ? where userid = "+ req.user.userid+";";
-    db.query(sqlInsert,[resultUrl],(err,result) => {
-        console.log(err);
-    }) 
+   resultUrl = publicUrl.split(" ").join("%20");
+   res.json({ message: "Data6 inserted successfully." });
 } 
 exports.insert7 = (req,res) => {
-
-  var publicUrl = '';  
+  var publicUrl;  
     try {
         if (req.file) {
           console.log("File found, trying to upload...");
@@ -204,10 +197,22 @@ exports.insert7 = (req,res) => {
       } catch (error) {
         res.status(500).send(error);
     }
+    console.log(year,batch,branch);
     console.log("Inserting achievement pdf ");
-    const achievementUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update teaching set achievement = ? where userid = "+ req.user.userid+";";
-    db.query(sqlInsert,[achievementUrl],(err,result) => {
+    achievementUrl = publicUrl.split(" ").join("%20");
+    const sqlInsert = "insert into teaching(year,batch,branch,subcode,subname,userid,tutorial,internal,attendance,feedback,timetable,result,achievement) values(?,?,?,?,?,?,?,?,?,?,?,?,?); ";
+    db.query(sqlInsert,[year,batch,branch,subcode,subname,req.user.userid,tutorialUrl,internalUrl,attendanceUrl,feedbackUrl,timetableUrl,resultUrl,achievementUrl],(err,result) => {
         console.log(err);
-    }) 
+    })
+    res.json({ message: "final Data inserted successfully." }); 
+}
+exports.delete = (req,res) => {
+  const teaid = req.body.teaid;
+  console.log(teaid)
+  const sqlDelete = "delete from teaching where tea_id = "+teaid+";";
+  db.query(sqlDelete,(err,result) => {
+    if (err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+  res.send("Deleted");
 } 
