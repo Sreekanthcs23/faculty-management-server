@@ -7,7 +7,7 @@ const multer = Multer({
   },
 });
 
-const controller = require('../controllers/fundedproject.controller');
+const controller = require('../controllers/publication.controller');
 const verifyJWT = require("../controllers/login.controller").verifyJWT;
 const express = require("express");
 
@@ -16,6 +16,7 @@ const router = express.Router();
 router.get("/select",verifyJWT,controller.select);
 
 router.post("/insert",verifyJWT, multer.single("pdffile"),controller.insert);
+
 router.post("/delete",verifyJWT,controller.delete);
 
 module.exports = router;

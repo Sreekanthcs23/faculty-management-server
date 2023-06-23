@@ -34,3 +34,13 @@ exports.insert = (req,res) => {
         console.log(err);
     }) 
 };
+exports.delete = (req,res) => {
+    const guidid = req.body.guidid;
+    console.log(guidid)
+    const sqlDelete = "delete from guidedproject where guid_id = "+guidid+";";
+    db.query(sqlDelete,(err,result) => {
+      if (err) throw err;
+      console.log("Number of records deleted: " + result.affectedRows);
+    });
+    res.send("Deleted");
+}
