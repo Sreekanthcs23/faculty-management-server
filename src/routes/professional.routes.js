@@ -35,10 +35,11 @@ router.get("/select1", verifyJWT, (req,res) => {
 });
 
 router.get("/select2", verifyJWT, (req,res) => {
+  console.log("inside select2 router");
   const sqlSelect = "select * from previous_experience where userid = " + req.user.userid + ";";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched "+result);
-      console.log(result[0].from_date);
+      //console.log(result[0].from_date);
       res.json(result);
   })
 });
@@ -191,4 +192,6 @@ db.query(sqlUpdate, [joiningDate, joiningDesignation, dateofProblemDeclaration, 
           console.log(err);
       }) 
     });
+
+router.post("/delete",verifyJWT,controller.delete);
 module.exports = router;

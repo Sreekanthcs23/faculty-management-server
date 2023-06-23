@@ -52,9 +52,19 @@ exports.insert1 = (req,res) => {
     console.log(req.body);
 
     const appointmentOrderUrl = publicUrl.split(" ").join("%20");
-
-    const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?  where userid = " +  req.user.userid  + " ;";
-    db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProbationDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
+    //const sqlCount = "select count * from current_institution where userid = "+  req.user.userid  + " ;";
+    /*let count; 
+     db.query(sqlSelect,(err,result) => {
+      console.log("fetched"+result);
+      count = result[0].count;
+    })
+    if(count == 0){
+      const sqlInsert = "insert into current_institution(joining_date, joining_designation, date_of_problem_declaration, promotion_date, promotion_designation, appointment_order_link, userid) values(?, ?, ?, ?, ?, ?, ?)  where userid = " +  req.user.userid  + " ;";
+    }
+    */
+      const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?   where userid = " +  req.user.userid  + " ;";
+    
+      db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProbationDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
         console.log(err);
     }) 
 };
@@ -118,6 +128,7 @@ exports.insert1Pdf3 = (req,res) => {
 //Previous experience
 
 exports.select2 = (req,res) => {
+  console.log("inside select 2 in controller");
   const sqlSelect = "select * from previous_experience where userid = " + req.user.userid + " ;";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
@@ -171,3 +182,12 @@ db.query(sqlInsert, [ req.user.userid , type, fromDate, toDate, designation, ins
 });
  
 };
+exports.delete = (req,res) => {
+  const profid = req.body.profid;
+  const sqlDelete = "delete from previous_experience where prev_exp_id = "+profid+";";
+  db.query(sqlDelete,(err,result) => {
+    if (err) throw err;
+    console.log("Number of records deleted: " + result.affectedRows);
+  });
+  res.send("Deleted");
+}
