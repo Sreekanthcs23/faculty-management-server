@@ -11,7 +11,6 @@ const bucket = storage.bucket("faculty_doc_bucket");
 
 // retrieve data current institution table
 exports.select1 = (req,res) => {
-  console.log("inside select1 controller");
     const sqlSelect = "select * from current_institution  where userid = " + req.user.userid + " ;" ;
     db.query(sqlSelect,(err,result) => {
         console.log("fetched"+result);
@@ -50,7 +49,7 @@ exports.insert1 = (req,res) => {
     const dateofProbationDeclaration = dateofProbationDeclaration1.toString().slice(4,15);
     const promotionDate = promotionDate1.toString().slice(4,15);
     console.log(req.body);
-
+    console.log("inserting details and appointmentOrderUrl");
     const appointmentOrderUrl = publicUrl.split(" ").join("%20");
     //const sqlCount = "select count * from current_institution where userid = "+  req.user.userid  + " ;";
     /*let count; 
@@ -62,20 +61,19 @@ exports.insert1 = (req,res) => {
       const sqlInsert = "insert into current_institution(joining_date, joining_designation, date_of_problem_declaration, promotion_date, promotion_designation, appointment_order_link, userid) values(?, ?, ?, ?, ?, ?, ?)  where userid = " +  req.user.userid  + " ;";
     }
     */
-      const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?   where userid = " +  req.user.userid  + " ;";
-    
+      const sqlInsert = "update current_institution set joining_date = ?, joining_designation = ?, date_of_problem_declaration = ?, promotion_date = ?, promotion_designation = ?, appointment_order_link = ?   where userid = " +  req.user.userid  + " ;";  
       db.query(sqlInsert,[joiningDate,joiningDesignation,dateofProbationDeclaration,promotionDate,promotionDesignation,appointmentOrderUrl],(err,result) => {
         console.log(err);
     }) 
 };
 
-//uploading problem declaration to current institute table
+//uploading probation declaration to current institute table
 exports.insert1Pdf2 = (req,res) => {
 
   var publicUrl = '';  
     try {
         if (req.file) {
-          console.log("File found, trying to upload...");
+          console.log("File found(pdf2), trying to upload...");
           const blob = bucket.file(req.file.originalname);
           publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
           console.log(publicUrl);
@@ -85,25 +83,26 @@ exports.insert1Pdf2 = (req,res) => {
             console.log("Success");
           });
           blobStream.end(req.file.buffer);
+          console.log("Inserting second pdf ");
+          const probationDeclarationUrl = publicUrl.split(" ").join("%20");
+          const sqlInsert = "update current_institution set probation_declaration_link = ? where userid = " + req.user.userid + " ;";
+          db.query(sqlInsert,[probationDeclarationUrl],(err,result) => {
+              console.log(err);
+    }) 
         } else throw "error with img";
       } catch (error) {
         res.status(500).send(error);
     }
-    console.log("Inserting second pdf ");
-    const probationDeclarationUrl = publicUrl.split(" ").join("%20");
-    const sqlInsert = "update current_institution set probation_declaration_link = ? where userid = " + req.user.userid + " ;";
-    db.query(sqlInsert,[probationDeclarationUrl],(err,result) => {
-        console.log(err);
-    }) 
+    
 } 
 
 //uploading promotion order to current institute table
 exports.insert1Pdf3 = (req,res) => {
 
   var publicUrl = '';  
-    try {
+    try { 
         if (req.file) {
-          console.log("File found, trying to upload...");
+          console.log("File found(pdf3), trying to upload...");
           const blob = bucket.file(req.file.originalname);
           publicUrl = `https://storage.googleapis.com/${bucket.name}/${blob.name}`;
           console.log(publicUrl);
@@ -128,7 +127,6 @@ exports.insert1Pdf3 = (req,res) => {
 //Previous experience
 
 exports.select2 = (req,res) => {
-  console.log("inside select 2 in controller");
   const sqlSelect = "select * from previous_experience where userid = " + req.user.userid + " ;";
   db.query(sqlSelect,(err,result) => {
       console.log("fetched"+result);
